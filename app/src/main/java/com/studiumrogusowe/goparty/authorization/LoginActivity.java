@@ -3,7 +3,6 @@ package com.studiumrogusowe.goparty.authorization;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -46,7 +45,9 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
 
-    private final static int REG_SINGUP=1337;
+    public final static String PARAM_USER_PASS = "user_pass";
+
+    private final static int REG_SINGUP = 1337;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -58,7 +59,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Log.d(getClass().getSimpleName(),"Oncreate login activity");
+        Log.d(getClass().getSimpleName(), "Oncreate login activity");
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -86,8 +87,8 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         initViews();
     }
 
-    private void initViews(){
-        registerButton= (Button) findViewById(R.id.register_button);
+    private void initViews() {
+        registerButton = (Button) findViewById(R.id.register_button);
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,8 +149,8 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         }
     }
 
-    private void executeRequest(){
-        final AuthLoginBodyObject authLoginBodyObject=new AuthLoginBodyObject();
+    private void executeRequest() {
+        final AuthLoginBodyObject authLoginBodyObject = new AuthLoginBodyObject();
         authLoginBodyObject.setEmail(mEmailView.getText().toString());
         authLoginBodyObject.setPassword(mPasswordView.getText().toString());
         AuthRestAdapter.getInstance().getAuthApi().getToken(authLoginBodyObject, new Callback<AuthResponseObject>() {
@@ -183,7 +184,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(LoginActivity.this,"FAILLLL",Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "FAILLLL", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -196,11 +197,6 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -246,6 +242,37 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         mEmailView.setAdapter(adapter);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REG_SINGUP && resultCode == RESULT_OK) {
+            finishLogin(data);
+        } else
+            super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void finishLogin(Intent intent) {
+
+        AccountManager accountManager = AccountManager.get(this);
+        String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+        String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
+        final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
+
+        if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
+            String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
+            String authtokenType = AuthorizationUtilities.ACCESS_TOKEN_TYPE;
+
+            // Creating the account on the device and setting the auth token we got
+            // (Not setting the auth token will cause another call to the server to authenticate the user)
+            accountManager.addAccountExplicitly(account, accountPassword, null);
+            accountManager.setAuthToken(account, authtokenType, authtoken);
+        } else {
+            accountManager.setPassword(account, accountPassword);
+        }
+
+        setAccountAuthenticatorResult(intent.getExtras());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 
     private interface ProfileQuery {
         String[] PROJECTION = {

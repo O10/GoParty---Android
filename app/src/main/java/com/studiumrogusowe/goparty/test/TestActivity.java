@@ -8,8 +8,6 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 
 import com.studiumrogusowe.goparty.R;
 import com.studiumrogusowe.goparty.authorization.AuthorizationUtilities;
@@ -42,6 +40,7 @@ public class TestActivity extends Activity {
     /**
      * Tą metodę damy do jakiejś bazowej activity i będziemy dziedziczyć żeby było dostępna z każ∂ego miejsca
      * Token jest pobierany asynchronicznie jeśli go nie ma odpalana jest login activity stąd ten callback
+     *
      * @param tokenCallback
      */
     protected void getUserToken(final TokenCallback tokenCallback) {
@@ -59,7 +58,6 @@ public class TestActivity extends Activity {
             }, null);
         }
     }
-
 
 
     private class GeneralHelperAccountManagerCallback implements AccountManagerCallback<Bundle> {

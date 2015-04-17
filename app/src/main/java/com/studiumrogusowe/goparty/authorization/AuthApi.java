@@ -21,4 +21,7 @@ public interface AuthApi {
 
     @POST("/token/login")
     void getToken(@Body AuthLoginBodyObject authLoginBodyObject, Callback<AuthResponseObject> reponseCallback);
+
+    @POST("/token/register")
+    void registerAndGetToken(@Body AuthLoginBodyObject authLoginBodyObject, Callback<AuthResponseObject> reponseCallback);
 }
