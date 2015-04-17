@@ -1,14 +1,19 @@
 package com.studiumrogusowe.goparty.authorization;
 
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorActivity;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,31 +23,42 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.studiumrogusowe.goparty.R;
+import com.studiumrogusowe.goparty.authorization.model.AuthLoginBodyObject;
+import com.studiumrogusowe.goparty.authorization.model.AuthResponseObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 /**
  *
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AccountAuthenticatorActivity implements LoaderCallbacks<Cursor> {
     public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
     public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
     public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
 
+    private final static int REG_SINGUP=1337;
+
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private Button registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Log.d(getClass().getSimpleName(),"Oncreate login activity");
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -64,6 +80,20 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        initViews();
+    }
+
+    private void initViews(){
+        registerButton= (Button) findViewById(R.id.register_button);
+        registerButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signup = new Intent(getBaseContext(), RegisterActivity.class);
+                signup.putExtras(getIntent().getExtras());
+                startActivityForResult(signup, REG_SINGUP);
             }
         });
     }
@@ -114,8 +144,48 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             // form field with an error.
             focusView.requestFocus();
         } else {
-
+            executeRequest();
         }
+    }
+
+    private void executeRequest(){
+        final AuthLoginBodyObject authLoginBodyObject=new AuthLoginBodyObject();
+        authLoginBodyObject.setEmail(mEmailView.getText().toString());
+        authLoginBodyObject.setPassword(mPasswordView.getText().toString());
+        AuthRestAdapter.getInstance().getAuthApi().getToken(authLoginBodyObject, new Callback<AuthResponseObject>() {
+            @Override
+            public void success(AuthResponseObject authResponseObject, Response response) {
+                AccountManager accountManager = AccountManager.get(LoginActivity.this);
+
+                Bundle data = new Bundle();
+                data.putString(AccountManager.KEY_ACCOUNT_NAME, authLoginBodyObject.getEmail());
+                data.putString(AccountManager.KEY_ACCOUNT_TYPE, getIntent().getStringExtra(ARG_ACCOUNT_TYPE));
+                data.putString(AccountManager.KEY_AUTHTOKEN, authResponseObject.getAccess_token());
+
+                final Account account = new Account(authLoginBodyObject.getEmail(), getIntent().getStringExtra(ARG_ACCOUNT_TYPE));
+
+                if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
+                    accountManager.addAccountExplicitly(account, authLoginBodyObject.getPassword(), null);
+                    accountManager.setAuthToken(account, AuthorizationUtilities.ACCESS_TOKEN_TYPE
+                            , authResponseObject.getAccess_token());
+                } else {
+                    accountManager.setPassword(account, authLoginBodyObject.getPassword());
+                }
+                accountManager.setAuthToken(account, AuthorizationUtilities.REFRESH_TOKEN_TYPE,
+                        authResponseObject.getRefresh_token());
+
+                Intent intent = new Intent();
+                intent.putExtras(data);
+                setAccountAuthenticatorResult(data);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(LoginActivity.this,"FAILLLL",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private boolean isEmailValid(String email) {
@@ -126,6 +196,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

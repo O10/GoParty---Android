@@ -2,4 +2,6 @@
     <string name="app_name">GoParty</string>
 
     <string name="go_part_acc_type">com.studiumrogusowe.goparty</string>
+
+    <string name="register_button">Register</string>
 </resources>
