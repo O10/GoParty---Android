@@ -5,7 +5,6 @@ package com.studiumrogusowe.goparty.authorization;
  */
 public class AuthorizationUtilities {
     public static final String API_PATH = "?";
-
     public static final String ACCESS_TOKEN_TYPE = "access_token";
     public static final String REFRESH_TOKEN_TYPE = "ref_token";
 }

@@ -1,8 +1,18 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="AppTheme.VioletBackground" parent="AppTheme">
+        <item name="android:background">@color/background_primary</item>
+    </style>
+
+    <style name="Logo" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">@color/button_default</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
 </resources>
