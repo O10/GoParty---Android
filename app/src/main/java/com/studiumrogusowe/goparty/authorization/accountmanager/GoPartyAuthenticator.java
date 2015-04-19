@@ -1,4 +1,4 @@
-package com.studiumrogusowe.goparty.authorization;
+package com.studiumrogusowe.goparty.authorization.accountmanager;
 
 /**
  * Created by O10 on 16.04.15.
@@ -15,8 +15,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.studiumrogusowe.goparty.authorization.model.AuthRefreshBodyObject;
-import com.studiumrogusowe.goparty.authorization.model.AuthResponseObject;
+import com.studiumrogusowe.goparty.authorization.LoginActivity;
+import com.studiumrogusowe.goparty.authorization.api.AuthRestAdapter;
+import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthRefreshBodyObject;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
 
 /**
  * Created by O10 on 01.04.15.

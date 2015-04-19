@@ -1,8 +1,8 @@
-package com.studiumrogusowe.goparty.authorization;
+package com.studiumrogusowe.goparty.authorization.api;
 
-import com.studiumrogusowe.goparty.authorization.model.AuthLoginBodyObject;
-import com.studiumrogusowe.goparty.authorization.model.AuthRefreshBodyObject;
-import com.studiumrogusowe.goparty.authorization.model.AuthResponseObject;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthLoginBodyObject;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthRefreshBodyObject;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
 
 import retrofit.Callback;
 import retrofit.http.Body;

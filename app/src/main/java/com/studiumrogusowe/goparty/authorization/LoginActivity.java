@@ -31,8 +31,10 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.studiumrogusowe.goparty.R;
-import com.studiumrogusowe.goparty.authorization.model.AuthLoginBodyObject;
-import com.studiumrogusowe.goparty.authorization.model.AuthResponseObject;
+import com.studiumrogusowe.goparty.authorization.api.AuthRestAdapter;
+import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthLoginBodyObject;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +47,14 @@ import retrofit.client.Response;
 
 
 public class LoginActivity extends AccountAuthenticatorActivity implements LoaderCallbacks<Cursor> {
+
     public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
     public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
     public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
-    private final  String TAG = getClass().getSimpleName();
+    private final String TAG = getClass().getSimpleName();
 
-    private CallbackManager callbackManager;
+    private CallbackManager fbCallbackManager;
     public final static String PARAM_USER_PASS = "user_pass";
 
     private final static int REG_SINGUP = 1337;
@@ -75,17 +78,18 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         Log.d(TAG, "Oncreate login activity");
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
+        fbCallbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
         fbLoginButton.setBackgroundResource(R.drawable.fb_login_button);
         fbLoginButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
-        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 String fbAccessToken = loginResult.getAccessToken().getToken();
                 Log.d(TAG, "Access Token: " + fbAccessToken);
+                Toast.makeText(LoginActivity.this, "You are logged in with Facebook", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -116,14 +120,17 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
             }
         });
 
+
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent signup = new Intent(getBaseContext(), RegisterActivity.class);
-                signup.putExtras(getIntent().getExtras());
+                if (getIntent().getExtras() != null)
+                    signup.putExtras(getIntent().getExtras());
                 startActivityForResult(signup, REG_SINGUP);
             }
-        });    }
+        });
+    }
 
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
@@ -211,7 +218,8 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(LoginActivity.this, "FAILLLL", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "FAILURE CONNECTING TO API");
+                Toast.makeText(LoginActivity.this, "FAILURE CONNECTING TO API", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -271,7 +279,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        fbCallbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REG_SINGUP && resultCode == RESULT_OK) {
             finishLogin(data);
@@ -312,5 +320,6 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
+
 }
 

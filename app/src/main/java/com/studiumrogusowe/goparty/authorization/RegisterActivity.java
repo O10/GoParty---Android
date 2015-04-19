@@ -4,13 +4,17 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.studiumrogusowe.goparty.R;
-import com.studiumrogusowe.goparty.authorization.model.AuthLoginBodyObject;
-import com.studiumrogusowe.goparty.authorization.model.AuthResponseObject;
+import com.studiumrogusowe.goparty.authorization.api.AuthRestAdapter;
+import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthLoginBodyObject;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -20,6 +24,7 @@ import retrofit.client.Response;
  * Created by O10 on 16.04.15.
  */
 public class RegisterActivity extends Activity {
+    private final String TAG = getClass().getSimpleName();
     private EditText login, password, confirmPassword;
     private Button signup;
 
@@ -70,7 +75,8 @@ public class RegisterActivity extends Activity {
 
             @Override
             public void failure(RetrofitError error) {
-
+                Log.d(TAG, "FAILURE CONNECTING TO API");
+                Toast.makeText(RegisterActivity.this, "FAILURE CONNECTING TO API", Toast.LENGTH_SHORT).show();
             }
         });
     }

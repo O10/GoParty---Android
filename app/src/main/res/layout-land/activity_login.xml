@@ -8,27 +8,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="@drawable/goparty_background">
 
-    <ImageView
-        android:id="@+id/logo_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
-
-    <TextView
-        android:id="@+id/log_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/logo_image"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/black"
-        android:textSize="15sp"
-        android:textStyle="bold" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/log_text">
+        android:layout_gravity="center"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="false"
+        android:layout_centerInParent="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -45,9 +35,12 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="paulina37@szymczakmaciejewski.com"
+                    android:text="rogus@soaparadise.com"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:hint="@string/prompt_email"
+                    android:background="@drawable/login_form_bg"
+                    android:padding="10dp"
                     android:paddingLeft="8dp"
                     android:singleLine="true" />
 
@@ -63,41 +56,41 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:paddingLeft="8dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/login_form_bg"
                     android:singleLine="true" />
 
                 <Button
                     android:id="@+id/email_sign_in_button"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/action_sign_in"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_height="@dimen/login_btn_height"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/action_log_in"
+                    android:background="@drawable/login_button" />
+
+                <Button
+                    android:id="@+id/register_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/login_btn_height"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/action_sign_up"
+                    android:background="@drawable/login_button" />
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/fb_login_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/login_btn_height"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/fb_login_button"
+                    android:textAllCaps="true"
+                    android:textStyle="normal" />
+
+
             </LinearLayout>
 
-            <Button
-                android:id="@+id/login_with_fb_bttn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/email_login_form"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/transparent"
-                android:shadowRadius="0"
-                android:textStyle="normal" />
-
-            <Button
-                android:id="@+id/redirect_web_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/login_with_fb_bttn"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/transparent"
-                android:drawablePadding="6dp"
-                android:shadowRadius="0"
-                android:textStyle="normal" />
         </RelativeLayout>
     </ScrollView>
 

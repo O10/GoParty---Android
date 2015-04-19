@@ -3,10 +3,10 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#000000"
+    android:background="@drawable/goparty_background"
     android:paddingLeft="17dp"
     android:paddingRight="17dp"
-    >
+    android:gravity="center_vertical|center_horizontal">
 
     <EditText
         android:id="@+id/name"
@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="Login"
+        android:background="@drawable/login_form_bg"
         android:inputType="text"
-        android:padding="10dp"
-        />
+        android:padding="10dp" />
 
     <EditText
         android:id="@+id/password"
@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Password"
+        android:background="@drawable/login_form_bg"
         android:inputType="textEmailAddress"
-        android:padding="10dp"
-        />
+        android:padding="10dp" />
 
     <EditText
         android:id="@+id/password_confirm"
@@ -34,15 +34,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:inputType="textPassword"
+        android:background="@drawable/login_form_bg"
         android:hint="Confirm Password"
-        android:padding="10dp"
-        />
+        android:padding="10dp" />
 
     <Button
         android:id="@+id/submit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/login_btn_height"
         android:layout_marginTop="10dp"
-        android:text="Create Account"
-        android:padding="10dp"/>
+        android:text="@string/action_sign_up"
+        android:background="@drawable/login_button" />
 </LinearLayout>

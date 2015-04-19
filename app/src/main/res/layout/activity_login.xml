@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="@drawable/goparty_background">
 
     <FrameLayout
         android:id="@+id/logo_frame"
@@ -19,9 +20,7 @@
             android:id="@+id/logo_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/goparty_logo_bg"
             android:gravity="center_vertical|center_horizontal"
-            android:textAppearance="@style/Logo"
             android:scaleType="fitCenter" />
 
     </FrameLayout>
@@ -47,9 +46,11 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="rogus@soaparadise.com"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:hint="@string/prompt_email"
+                    android:background="@drawable/login_form_bg"
+                    android:padding="10dp"
                     android:paddingLeft="8dp"
                     android:singleLine="true" />
 
@@ -64,36 +65,33 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:paddingLeft="8dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/login_form_bg"
                     android:singleLine="true" />
 
                 <Button
                     android:id="@+id/email_sign_in_button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/login_btn_height"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/action_sign_in"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/action_log_in"
                     android:background="@drawable/login_button" />
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/register_button"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/register_button"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:layout_height="@dimen/login_btn_height"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/action_sign_up"
+                    android:background="@drawable/login_button" />
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/fb_login_button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/login_btn_height"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="30dp"
                     android:background="@drawable/fb_login_button"
                     android:textAllCaps="true"

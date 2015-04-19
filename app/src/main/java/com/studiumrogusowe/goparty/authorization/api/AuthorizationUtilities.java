@@ -1,4 +1,4 @@
-package com.studiumrogusowe.goparty.authorization;
+package com.studiumrogusowe.goparty.authorization.api;
 
 /**
  * Created by O10 on 16.04.15.

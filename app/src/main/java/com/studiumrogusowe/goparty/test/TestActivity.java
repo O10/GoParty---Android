@@ -10,8 +10,8 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.studiumrogusowe.goparty.R;
-import com.studiumrogusowe.goparty.authorization.AuthorizationUtilities;
-import com.studiumrogusowe.goparty.authorization.TokenCallback;
+import com.studiumrogusowe.goparty.authorization.accountmanager.TokenCallback;
+import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
 
 import java.io.IOException;
 

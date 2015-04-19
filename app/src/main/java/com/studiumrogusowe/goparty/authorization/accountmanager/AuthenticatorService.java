@@ -1,4 +1,4 @@
-package com.studiumrogusowe.goparty.authorization;
+package com.studiumrogusowe.goparty.authorization.accountmanager;
 
 import android.app.Service;
 import android.content.Intent;

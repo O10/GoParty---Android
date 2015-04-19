@@ -1,9 +1,10 @@
-package com.studiumrogusowe.goparty.authorization.model;
+package com.studiumrogusowe.goparty.authorization.api.model;
 
 /**
  * Created by O10 on 16.04.15.
  */
 public class AuthResponseObject {
+
     private String access_token;
 
     private String refresh_token;
