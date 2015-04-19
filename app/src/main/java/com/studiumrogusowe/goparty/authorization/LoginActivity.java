@@ -35,6 +35,7 @@ import com.studiumrogusowe.goparty.authorization.api.AuthRestAdapter;
 import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
 import com.studiumrogusowe.goparty.authorization.api.model.AuthLoginBodyObject;
 import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
+import com.studiumrogusowe.goparty.test.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,9 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     EditText mPasswordView;
     @InjectView(R.id.register_button)
     Button registerButton;
+
+    @InjectView(R.id.test_nav_button)
+    Button mTestButton;
 
 
     @Override
@@ -120,6 +124,13 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
             }
         });
 
+        mTestButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent test = new Intent(getBaseContext(),MainActivity.class);
+               startActivity(test);
+            }
+        });
 
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
