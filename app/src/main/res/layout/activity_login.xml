@@ -8,8 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity"
-    style="@style/AppTheme.VioletBackground">
+    tools:context=".LoginActivity">
 
     <FrameLayout
         android:id="@+id/logo_frame"
@@ -59,7 +58,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
-                    android:text="password_0"
                     android:imeActionId="5"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
@@ -75,6 +73,20 @@
                     android:layout_marginTop="24dp"
                     android:text="@string/action_sign_in"
                     android:background="@drawable/login_button" />
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/register_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/register_button"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/fb_login_button"
