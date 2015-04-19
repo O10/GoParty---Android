@@ -59,6 +59,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     public final static String PARAM_USER_PASS = "user_pass";
 
     private final static int REG_SINGUP = 1337;
+    int hiddenPass;
 
     @InjectView(R.id.email_sign_in_button)
     Button mEmailSignInButton;
@@ -70,10 +71,6 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     EditText mPasswordView;
     @InjectView(R.id.register_button)
     Button registerButton;
-
-    @InjectView(R.id.test_nav_button)
-    Button mTestButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,13 +121,6 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
             }
         });
 
-        mTestButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               Intent test = new Intent(getBaseContext(),MainActivity.class);
-               startActivity(test);
-            }
-        });
 
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -320,6 +310,14 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    public void secretPass(View view) {
+        if (++hiddenPass > 2) {
+            Intent test = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(test);
+            hiddenPass = 0;
+        }
     }
 
     private interface ProfileQuery {

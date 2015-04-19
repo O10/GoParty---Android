@@ -16,12 +16,12 @@ public interface AuthApi {
     @POST("/token/refresh")
     AuthResponseObject refreshToken(@Body AuthRefreshBodyObject authRefreshBodyObject);
 
-    @POST("/token/login")
+    @POST("/auth/signin/credentials")
     AuthResponseObject getToken(@Body AuthLoginBodyObject authLoginBodyObject);
 
     @POST("/token/login")
     void getToken(@Body AuthLoginBodyObject authLoginBodyObject, Callback<AuthResponseObject> reponseCallback);
 
-    @POST("/token/register")
+    @POST("/auth/signup")
     void registerAndGetToken(@Body AuthLoginBodyObject authLoginBodyObject, Callback<AuthResponseObject> reponseCallback);
 }

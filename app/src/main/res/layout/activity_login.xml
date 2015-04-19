@@ -21,7 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:gravity="center_vertical|center_horizontal"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo"
+            android:onClick="secretPass"
+            android:padding="50dp" />
 
     </FrameLayout>
 
@@ -96,15 +99,6 @@
                     android:background="@drawable/fb_login_button"
                     android:textAllCaps="true"
                     android:textStyle="normal" />
-
-                <Button
-                    android:id="@+id/test_nav_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/login_btn_height"
-                    android:layout_marginTop="0dp"
-                    android:text="test"
-                    android:background="@drawable/login_button" />
-
 
             </LinearLayout>
 
