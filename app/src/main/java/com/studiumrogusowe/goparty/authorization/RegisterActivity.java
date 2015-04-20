@@ -52,6 +52,7 @@ public class RegisterActivity extends Activity {
 
     private void register() {
         if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
+            Toast.makeText(this,"Passwords don't match!",Toast.LENGTH_LONG).show();
             return;
         }
         final AuthLoginBodyObject authLoginBodyObject = new AuthLoginBodyObject();
