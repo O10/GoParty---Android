@@ -38,6 +38,7 @@ import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
 import com.studiumrogusowe.goparty.test.MainActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -84,6 +85,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         ButterKnife.inject(this);
         fbLoginButton.setBackgroundResource(R.drawable.fb_login_button);
         fbLoginButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        fbLoginButton.setReadPermissions(Arrays.asList(new String[] {"public_profile","email","user_friends"}));
 
         fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
