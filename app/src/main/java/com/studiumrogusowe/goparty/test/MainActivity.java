@@ -130,7 +130,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new EventsFragment();
                 break;
             case 1:
-                //fragment = new FindPeopleFragment();
+                fragment = new UserProfileFragment();
                 break;
             case 2:
                 //fragment = new PhotosFragment();
