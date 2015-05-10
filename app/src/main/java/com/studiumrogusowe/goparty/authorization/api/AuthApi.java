@@ -19,7 +19,7 @@ public interface AuthApi {
     @POST("/auth/signin/credentials")
     AuthResponseObject getToken(@Body AuthLoginBodyObject authLoginBodyObject);
 
-    @POST("/token/login")
+    @POST("/auth/signin/credentials")
     void getToken(@Body AuthLoginBodyObject authLoginBodyObject, Callback<AuthResponseObject> reponseCallback);
 
     @POST("/auth/signup")

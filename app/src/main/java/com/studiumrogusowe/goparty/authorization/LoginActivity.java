@@ -54,14 +54,10 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
     public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
-    private final String TAG = getClass().getSimpleName();
-
-    private CallbackManager fbCallbackManager;
     public final static String PARAM_USER_PASS = "user_pass";
-
     private final static int REG_SINGUP = 1337;
+    private final String TAG = getClass().getSimpleName();
     int hiddenPass;
-
     @InjectView(R.id.email_sign_in_button)
     Button mEmailSignInButton;
     @InjectView(R.id.fb_login_button)
@@ -72,6 +68,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     EditText mPasswordView;
     @InjectView(R.id.register_button)
     Button registerButton;
+    private CallbackManager fbCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +82,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         ButterKnife.inject(this);
         fbLoginButton.setBackgroundResource(R.drawable.fb_login_button);
         fbLoginButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        fbLoginButton.setReadPermissions(Arrays.asList(new String[] {"public_profile","email","user_friends"}));
+        fbLoginButton.setReadPermissions(Arrays.asList(new String[]{"public_profile", "email", "user_friends"}));
 
         fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -101,6 +98,8 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
 
             @Override
             public void onError(FacebookException exception) {
+                Log.d(TAG, "Exception " + exception);
+                Log.d(TAG, "Cause " + exception.getCause());
                 Toast.makeText(getApplicationContext(), R.string.facebook_login_failure, Toast.LENGTH_LONG).show();
             }
         });
@@ -291,11 +290,10 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     }
 
     private void finishLogin(Intent intent) {
-
         AccountManager accountManager = AccountManager.get(this);
         String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
         String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
-        final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
+        final Account account = new Account(accountName, getIntent().getStringExtra(ARG_ACCOUNT_TYPE));
 
         if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
             String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);

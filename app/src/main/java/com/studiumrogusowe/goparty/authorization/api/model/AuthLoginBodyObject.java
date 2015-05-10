@@ -6,6 +6,7 @@ package com.studiumrogusowe.goparty.authorization.api.model;
 public class AuthLoginBodyObject {
     private String email;
     private String password;
+    private String role = "individual";
 
     public String getEmail() {
         return email;
@@ -21,5 +22,13 @@ public class AuthLoginBodyObject {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

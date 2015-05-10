@@ -1,9 +1,7 @@
 package com.studiumrogusowe.goparty.test;
 
-import android.app.Activity;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +41,7 @@ public class EventsFragment extends Fragment {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 view.getContext(),
                 android.R.layout.simple_list_item_1,
-                events );
+                events);
 
         eventsList.setAdapter(arrayAdapter);
         // Inflate the layout for this fragment

@@ -41,7 +41,6 @@ public class RegisterActivity extends Activity {
         this.password = (EditText) findViewById(R.id.password);
         this.confirmPassword = (EditText) findViewById(R.id.password_confirm);
         this.signup = (Button) findViewById(R.id.submit);
-
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +51,7 @@ public class RegisterActivity extends Activity {
 
     private void register() {
         if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
-            Toast.makeText(this,"Passwords don't match!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Passwords don't match!", Toast.LENGTH_LONG).show();
             return;
         }
         final AuthLoginBodyObject authLoginBodyObject = new AuthLoginBodyObject();

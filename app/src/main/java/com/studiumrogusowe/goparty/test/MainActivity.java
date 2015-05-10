@@ -1,29 +1,30 @@
 package com.studiumrogusowe.goparty.test;
 
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
-
+import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-
-import android.os.Bundle;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
 import android.widget.Toast;
 
 import com.studiumrogusowe.goparty.R;
+import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -38,7 +39,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        handleNoAccounts();
         mTitle = "test";
 
         mPlanetTitles = new String[]{"Imprezy", "Twój profil", "Ustawienia"};
@@ -73,7 +74,7 @@ public class MainActivity extends ActionBarActivity {
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeButtonEnabled(true);
 
 
@@ -123,7 +124,7 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.closeDrawer(mDrawerBox);
     }
 
-    private void createFragment(int position){
+    private void createFragment(int position) {
         Fragment fragment = null;
         switch (position) {
             case 0:
@@ -151,10 +152,33 @@ public class MainActivity extends ActionBarActivity {
             Log.e("MainActivity", "Error in creating fragment");
         }
     }
+
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-      //  getSupportActionBar().setTitle(mTitle);
+        //  getSupportActionBar().setTitle(mTitle);
+    }
+
+    private void handleNoAccounts() {
+        final AccountManager accountManager = AccountManager.get(this);
+        final Account[] accounts = accountManager.getAccountsByType(getString(R.string.go_part_acc_type));
+        if (accounts.length == 0) {
+            accountManager.addAccount(getString(R.string.go_part_acc_type), AuthorizationUtilities.ACCESS_TOKEN_TYPE, null, null, this, new AccountManagerCallback<Bundle>() {
+                @Override
+                public void run(AccountManagerFuture<Bundle> accountManagerFuture) {
+                    final Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                }
+            }, null);
+        }
+
+    }
+
+    public void restartActivity() {
+        final Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
