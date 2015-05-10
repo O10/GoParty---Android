@@ -7,11 +7,15 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,15 +32,19 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.studiumrogusowe.goparty.R;
 import com.studiumrogusowe.goparty.authorization.api.AuthRestAdapter;
 import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
+import com.studiumrogusowe.goparty.authorization.api.model.AuthFacebookLoginBody;
 import com.studiumrogusowe.goparty.authorization.api.model.AuthLoginBodyObject;
 import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
 import com.studiumrogusowe.goparty.test.MainActivity;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,6 +84,37 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         super.onCreate(savedInstanceState);
         Log.d(TAG, "Oncreate login activity");
 
+
+        PackageInfo packageInfo;
+        String key = null;
+        try {
+            //getting application package name, as defined in manifest
+            String packageName = getApplicationContext().getPackageName();
+
+            //Retriving package info
+            packageInfo = getPackageManager().getPackageInfo(packageName,
+                    PackageManager.GET_SIGNATURES);
+
+            Log.e("Package Name=", getApplicationContext().getPackageName());
+
+            for (Signature signature : packageInfo.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                key = new String(Base64.encode(md.digest(), 0));
+
+                // String key = new String(Base64.encodeBytes(md.digest()));
+                Log.e("Key Hash=", key);
+            }
+        } catch (PackageManager.NameNotFoundException e1) {
+            Log.e("Name not found", e1.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("No such an algorithm", e.toString());
+        } catch (Exception e) {
+            Log.e("Exception", e.toString());
+        }
+
+
+        FacebookSdk.setIsDebugEnabled(true);
         FacebookSdk.sdkInitialize(getApplicationContext());
         fbCallbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_login);
@@ -86,10 +125,24 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
 
         fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
+            public void onSuccess(final LoginResult loginResult) {
                 String fbAccessToken = loginResult.getAccessToken().getToken();
-                Log.d(TAG, "Access Token: " + fbAccessToken);
-                Toast.makeText(LoginActivity.this, "You are logged in with Facebook", Toast.LENGTH_SHORT).show();
+
+                final AuthFacebookLoginBody authFacebookLoginBody = new AuthFacebookLoginBody();
+                authFacebookLoginBody.setAccessToken(fbAccessToken);
+
+                AuthRestAdapter.getInstance().getAuthApi().getToken(authFacebookLoginBody, new Callback<AuthResponseObject>() {
+                    @Override
+                    public void success(AuthResponseObject authResponseObject, Response response) {
+                        Toast.makeText(LoginActivity.this, "You are logged in with Facebook", Toast.LENGTH_SHORT).show();
+                        saveAccount(loginResult.getAccessToken().getUserId(), "", authResponseObject.getAccess_token());
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Toast.makeText(getApplicationContext(), R.string.facebook_login_failure, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
             @Override
@@ -192,38 +245,42 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         AuthRestAdapter.getInstance().getAuthApi().getToken(authLoginBodyObject, new Callback<AuthResponseObject>() {
             @Override
             public void success(AuthResponseObject authResponseObject, Response response) {
-                AccountManager accountManager = AccountManager.get(LoginActivity.this);
-
-                Bundle data = new Bundle();
-                data.putString(AccountManager.KEY_ACCOUNT_NAME, authLoginBodyObject.getEmail());
-                data.putString(AccountManager.KEY_ACCOUNT_TYPE, getIntent().getStringExtra(ARG_ACCOUNT_TYPE));
-                data.putString(AccountManager.KEY_AUTHTOKEN, authResponseObject.getAccess_token());
-
-                final Account account = new Account(authLoginBodyObject.getEmail(), getIntent().getStringExtra(ARG_ACCOUNT_TYPE));
-
-                if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
-                    accountManager.addAccountExplicitly(account, authLoginBodyObject.getPassword(), null);
-                    accountManager.setAuthToken(account, AuthorizationUtilities.ACCESS_TOKEN_TYPE
-                            , authResponseObject.getAccess_token());
-                } else {
-                    accountManager.setPassword(account, authLoginBodyObject.getPassword());
-                }
-                accountManager.setAuthToken(account, AuthorizationUtilities.REFRESH_TOKEN_TYPE,
-                        authResponseObject.getRefresh_token());
-
-                Intent intent = new Intent();
-                intent.putExtras(data);
-                setAccountAuthenticatorResult(data);
-                setResult(RESULT_OK, intent);
-                finish();
+                saveAccount(authLoginBodyObject.getEmail(), authLoginBodyObject.getPassword(), authResponseObject.getAccess_token());
+                Toast.makeText(LoginActivity.this, "LOGOWANIE UDANE", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void failure(RetrofitError error) {
+                LoginManager.getInstance().logOut();
                 Log.d(TAG, "FAILURE CONNECTING TO API");
                 Toast.makeText(LoginActivity.this, "FAILURE CONNECTING TO API", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void saveAccount(String email, String password, String accessToken) {
+        AccountManager accountManager = AccountManager.get(LoginActivity.this);
+
+        Bundle data = new Bundle();
+        data.putString(AccountManager.KEY_ACCOUNT_NAME, email);
+        data.putString(AccountManager.KEY_ACCOUNT_TYPE, getIntent().getStringExtra(ARG_ACCOUNT_TYPE));
+        data.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
+
+        final Account account = new Account(email, getIntent().getStringExtra(ARG_ACCOUNT_TYPE));
+
+        if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
+            accountManager.addAccountExplicitly(account, password, null);
+            accountManager.setAuthToken(account, AuthorizationUtilities.ACCESS_TOKEN_TYPE
+                    , accessToken);
+        } else {
+            accountManager.setPassword(account, password);
+        }
+
+        Intent intent = new Intent();
+        intent.putExtras(data);
+        setAccountAuthenticatorResult(data);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private boolean isEmailValid(String email) {

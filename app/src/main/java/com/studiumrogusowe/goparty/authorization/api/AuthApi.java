@@ -1,5 +1,6 @@
 package com.studiumrogusowe.goparty.authorization.api;
 
+import com.studiumrogusowe.goparty.authorization.api.model.AuthFacebookLoginBody;
 import com.studiumrogusowe.goparty.authorization.api.model.AuthLoginBodyObject;
 import com.studiumrogusowe.goparty.authorization.api.model.AuthRefreshBodyObject;
 import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
@@ -16,8 +17,8 @@ public interface AuthApi {
     @POST("/token/refresh")
     AuthResponseObject refreshToken(@Body AuthRefreshBodyObject authRefreshBodyObject);
 
-    @POST("/auth/signin/credentials")
-    AuthResponseObject getToken(@Body AuthLoginBodyObject authLoginBodyObject);
+    @POST("/auth/signin/facebook")
+    void getToken(@Body AuthFacebookLoginBody authFacebookLoginBody, Callback<AuthResponseObject> reponseCallback);
 
     @POST("/auth/signin/credentials")
     void getToken(@Body AuthLoginBodyObject authLoginBodyObject, Callback<AuthResponseObject> reponseCallback);
