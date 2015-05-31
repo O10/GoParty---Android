@@ -10,7 +10,43 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:background="@drawable/goparty_background"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#90000000">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:id="@+id/imageView"
+                android:src="@drawable/logo"
+                android:background="#ffffff"
+                android:layout_marginTop="90dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Welcome to GoParty!"
+                android:id="@+id/textView11"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Slide from the left edge to show menu"
+                android:id="@+id/textView12"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp" />
+
+        </LinearLayout>
+    </FrameLayout>
     <!-- The navigation drawer -->
     <LinearLayout
     android:id="@+id/profileBox"
@@ -24,7 +60,7 @@
             android:layout_width="120dp"
 
             android:layout_height="120dp"
-            android:src="@drawable/avatar"
+            android:src="@drawable/logo"
             android:layout_gravity="center"
             android:layout_margin="30dp" />
         <ListView

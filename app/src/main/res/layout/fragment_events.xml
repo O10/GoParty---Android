@@ -7,20 +7,26 @@
     android:background="@drawable/goparty_background">
 
     <!-- TODO: Update blank fragment layout -->
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:background="#90000000"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/Wydarzenia"
+        android:text="@string/najblizszekluby"
         android:id="@+id/textView2"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/eventsListView"
         android:headerDividersEnabled="true" />
+</LinearLayout>
 </LinearLayout>

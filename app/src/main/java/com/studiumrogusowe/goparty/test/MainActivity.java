@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
         handleNoAccounts();
         mTitle = "test";
 
-        mPlanetTitles = new String[]{"Imprezy", "Twój profil", "Ustawienia"};
+        mPlanetTitles = new String[]{"Clubs", "Your profile", "Settings"};
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerBox = (LinearLayout) findViewById(R.id.profileBox);
@@ -116,7 +116,7 @@ public class MainActivity extends ActionBarActivity {
      * Swaps fragments in the main content view
      */
     private void selectItem(int position) {
-        Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
 
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -134,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new UserProfileFragment();
                 break;
             case 2:
-                //fragment = new PhotosFragment();
+                Toast.makeText(getApplicationContext(),"Under Construction",Toast.LENGTH_SHORT).show();
                 break;
 
             default:

@@ -4,9 +4,11 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -127,7 +129,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
             @Override
             public void onSuccess(final LoginResult loginResult) {
                 String fbAccessToken = loginResult.getAccessToken().getToken();
-
+                Log.d("token",fbAccessToken);
                 final AuthFacebookLoginBody authFacebookLoginBody = new AuthFacebookLoginBody();
                 authFacebookLoginBody.setAccessToken(fbAccessToken);
 
@@ -135,12 +137,15 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
                     @Override
                     public void success(AuthResponseObject authResponseObject, Response response) {
                         Toast.makeText(LoginActivity.this, "You are logged in with Facebook", Toast.LENGTH_SHORT).show();
+                        Log.d("token",authResponseObject.getAccess_token());
+
+
                         saveAccount(loginResult.getAccessToken().getUserId(), "", authResponseObject.getAccess_token());
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Toast.makeText(getApplicationContext(), R.string.facebook_login_failure, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "fail nasz serwer", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -153,7 +158,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
             public void onError(FacebookException exception) {
                 Log.d(TAG, "Exception " + exception);
                 Log.d(TAG, "Cause " + exception.getCause());
-                Toast.makeText(getApplicationContext(), R.string.facebook_login_failure, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "facebook error", Toast.LENGTH_LONG).show();
             }
         });
         populateAutoComplete();
@@ -265,6 +270,12 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         data.putString(AccountManager.KEY_ACCOUNT_NAME, email);
         data.putString(AccountManager.KEY_ACCOUNT_TYPE, getIntent().getStringExtra(ARG_ACCOUNT_TYPE));
         data.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
+
+        // save accessToken to shared-prefs
+        SharedPreferences prefs = getSharedPreferences("com.studiumrogusowe.goparty", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("token", "Bearer "+accessToken);
+        editor.commit();
 
         final Account account = new Account(email, getIntent().getStringExtra(ARG_ACCOUNT_TYPE));
 
