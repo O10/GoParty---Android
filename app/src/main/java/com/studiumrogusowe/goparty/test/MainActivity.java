@@ -21,10 +21,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.studiumrogusowe.goparty.R;
 import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
+import com.studiumrogusowe.goparty.settings.SettingsFragment;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -116,7 +116,7 @@ public class MainActivity extends ActionBarActivity {
      * Swaps fragments in the main content view
      */
     private void selectItem(int position) {
-       // Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
 
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -134,7 +134,8 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new UserProfileFragment();
                 break;
             case 2:
-                Toast.makeText(getApplicationContext(),"Under Construction",Toast.LENGTH_SHORT).show();
+                fragment = new SettingsFragment();
+                //Toast.makeText(getApplicationContext(),"Under Construction",Toast.LENGTH_SHORT).show();
                 break;
 
             default:
