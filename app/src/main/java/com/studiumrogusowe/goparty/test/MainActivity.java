@@ -90,14 +90,10 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         if (drawerExposed) {
-            System.out.println("drawer exposed, hiding");
             mDrawerLayout.closeDrawer(mDrawerBox);
         } else {
-            System.out.println("drawer hidden, backing");
-
             if (!fragmentHistory.isEmpty()) {
                 selectItem(fragmentHistory.pop(), true);
-                System.out.println("fragmenthistory not emty, popping");
             } else
                 super.onBackPressed();
         }
@@ -142,14 +138,12 @@ public class MainActivity extends ActionBarActivity {
         // Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
 
         // Highlight the selected item, update the title, and close the drawer
-        System.out.println("selecting "+ position);
-        System.out.println("onSTakc: "+  onStack);
+
         mDrawerList.setItemChecked(position, true);
         createFragment(position);
         mDrawerLayout.closeDrawer(mDrawerBox);
 
         if (!onStack ) {
-            System.out.println("puting " + position + " on stack");
             fragmentHistory.push(currentPosition);
         }
         currentPosition = position;

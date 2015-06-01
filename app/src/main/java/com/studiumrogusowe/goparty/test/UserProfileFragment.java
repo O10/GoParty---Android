@@ -61,7 +61,6 @@ public class UserProfileFragment extends Fragment {
                 name.setText(profileResponseObject.getFirst_name() + " " + profileResponseObject.getLast_name());
 
                 if(profileResponseObject.getFavourite_bands() != null){
-                    System.out.println("activitynull?: " + getActivity());
                     favBands.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, profileResponseObject.getFavourite_bands()));
                 }
                 if(profileResponseObject.getFavourite_genres() != null){
