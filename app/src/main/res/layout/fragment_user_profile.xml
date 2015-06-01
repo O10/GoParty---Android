@@ -5,10 +5,11 @@
     android:background="@drawable/goparty_background"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#90000000"
+        android:padding="25dp"
         android:orientation="vertical">
 
         <TextView
@@ -18,67 +19,110 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:gravity="center"
+            android:layout_margin="20dp"
             android:text="@string/profil_uzytkownika"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="25dp" />
 
-        <ImageView
-            android:id="@+id/userProfileAvatar"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/avatar" />
-
-        <TextView
-            android:id="@+id/userProfileName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/avatarLayout"
+            android:orientation="horizontal"
+            android:layout_below="@id/textView3"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="Name"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp">
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/userProfileAvatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center|left"
+                android:src="@drawable/avatar" />
+
+            <TextView
+                android:id="@+id/userProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Name"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/avatarLayout"
+            android:id="@+id/adapter_title_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Favourite Genres:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold" />
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
 
-        <ListView
-            android:id="@+id/userProfileFavGenresList"
-            android:layout_width="wrap_content"
-            android:layout_height="90dp"
-            android:choiceMode="none" />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favourite Genres:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:layout_gravity="left"
+                android:layout_weight="1" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favourite Bands:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:layout_gravity="right"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/adapter_title_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Favourite Bands:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold" />
+            android:layout_gravity="center_horizontal"
+            android:layout_above="@+id/userProfileEdit"
+            android:layout_alignRight="@+id/adapter_title_layout"
+            android:layout_alignEnd="@+id/adapter_title_layout">
 
-        <ListView
-            android:id="@+id/userProfileFavBandsList"
-            android:layout_width="wrap_content"
-            android:layout_height="90dp"
-            android:choiceMode="none" />
+            <ListView
+                android:id="@+id/userProfileFavGenresList"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:choiceMode="none"
+                android:layout_weight="1"
+                android:layout_gravity="left" />
+
+            <ListView
+                android:id="@+id/userProfileFavBandsList"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:choiceMode="none"
+                android:layout_gravity="right"
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/userProfileEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
             android:background="@drawable/login_button"
-            android:text="Edit profile" />
+            android:text="Edit profile"
+            android:enabled="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

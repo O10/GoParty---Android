@@ -22,12 +22,14 @@
             android:layout_marginTop="20dp"
             android:text="@string/najblizszekluby"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="25sp" />
 
         <ListView
             android:id="@+id/eventsListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:headerDividersEnabled="true" />
+            android:headerDividersEnabled="true"
+            android:padding="5dp" />
     </LinearLayout>
 </LinearLayout>

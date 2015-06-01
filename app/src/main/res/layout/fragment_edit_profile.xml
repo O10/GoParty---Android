@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#90000000"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="25dp">
         <!-- TODO: Update blank fragment layout -->
 
         <TextView
@@ -22,7 +23,9 @@
             android:layout_marginTop="10dp"
             android:text="Edit Profile"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_marginBottom="20dp" />
 
         <TableLayout
             android:layout_width="fill_parent"
@@ -45,7 +48,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/login_form_bg" />
+                    android:background="@drawable/login_form_bg"
+                    android:layout_marginLeft="15dp"
+                    android:padding="5dp" />
             </TableRow>
 
             <TableRow
@@ -65,7 +70,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/login_form_bg" />
+                    android:background="@drawable/login_form_bg"
+                    android:layout_marginLeft="15dp"
+                    android:padding="5dp" />
             </TableRow>
         </TableLayout>
 
@@ -73,7 +80,7 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="Favourite bands:"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -83,7 +90,10 @@
             android:layout_height="100dp"
             android:background="@drawable/login_form_bg"
             android:ems="10"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:padding="5dp" />
 
         <TextView
             android:id="@+id/textView10"
@@ -98,7 +108,10 @@
             android:layout_height="100dp"
             android:background="@drawable/login_form_bg"
             android:ems="10"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:padding="5dp" />
 
         <Button
             android:id="@+id/editProfileSave"

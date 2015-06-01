@@ -6,14 +6,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.studiumrogusowe.goparty.R;
@@ -21,17 +18,16 @@ import com.studiumrogusowe.goparty.profile.api.ProfileRestAdapter;
 import com.studiumrogusowe.goparty.profile.api.model.ProfileBodyObject;
 import com.studiumrogusowe.goparty.profile.api.model.ProfileResponseObject;
 
-import java.util.ArrayList;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class EditProfileFragment extends Fragment {
 
-    EditText name,lastname,favGenres,favBands;
+    EditText name, lastname, favGenres, favBands;
     Button save;
     String token;
+
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -53,10 +49,8 @@ public class EditProfileFragment extends Fragment {
         save = (Button) view.findViewById(R.id.editProfileSave);
 
         SharedPreferences sp = this.getActivity().getSharedPreferences("com.studiumrogusowe.goparty", Context.MODE_PRIVATE);
-        token = sp.getString("token","Bearer 0");
+        token = sp.getString("token", "Bearer 0");
         Log.d("profiletoken", token);
-
-
 
 
         ProfileRestAdapter.getInstance().getProfileApi().getProfile(token, new Callback<ProfileResponseObject>() {
@@ -67,9 +61,10 @@ public class EditProfileFragment extends Fragment {
                 // setting name fields etc
                 name.setText(profileResponseObject.getFirst_name());
                 lastname.setText(profileResponseObject.getLast_name());
-                favBands.setText(profileResponseObject.getFavourite_bands().toString().replace("[","").replace("]",""));
-                favGenres.setText(profileResponseObject.getFavourite_genres().toString().replace("[", "").replace("]", ""));
-
+                if (profileResponseObject.getFavourite_bands() != null)
+                    favBands.setText(profileResponseObject.getFavourite_bands().toString().replace("[", "").replace("]", ""));
+                if (profileResponseObject.getFavourite_genres() != null)
+                    favGenres.setText(profileResponseObject.getFavourite_genres().toString().replace("[", "").replace("]", ""));
 
             }
 
@@ -105,7 +100,7 @@ public class EditProfileFragment extends Fragment {
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Log.d("error",error.toString());
+                        Log.d("error", error.toString());
                     }
                 });
 

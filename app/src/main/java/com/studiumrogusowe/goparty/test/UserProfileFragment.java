@@ -17,12 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
 import com.studiumrogusowe.goparty.R;
-import com.studiumrogusowe.goparty.authorization.api.AuthRestAdapter;
-import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
 import com.studiumrogusowe.goparty.profile.api.ProfileRestAdapter;
 import com.studiumrogusowe.goparty.profile.api.model.ProfileResponseObject;
 
@@ -41,9 +37,57 @@ public class UserProfileFragment extends Fragment {
     ListView favGenres, favBands;
     ImageView avatar;
     Button editProfile;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        SharedPreferences sp = this.getActivity().getSharedPreferences("com.studiumrogusowe.goparty", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "Bearer 0");
+        Log.d("profiletoken", token);
+
+        ProfileRestAdapter.getInstance().getProfileApi().getProfile(token, new Callback<ProfileResponseObject>() {
+            @Override
+            public void success(ProfileResponseObject profileResponseObject, Response response) {
+
+                new DownloadImageTask(avatar)
+                        .execute(profileResponseObject.getPicture_url());
+                // setting name fields etc
+                name.setText(profileResponseObject.getFirst_name() + " " + profileResponseObject.getLast_name());
+
+                if(profileResponseObject.getFavourite_bands() != null){
+                    System.out.println("activitynull?: " + getActivity());
+                    favBands.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, profileResponseObject.getFavourite_bands()));
+                }
+                if(profileResponseObject.getFavourite_genres() != null){
+                    favGenres.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, profileResponseObject.getFavourite_genres()));
+
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("error", error.toString());
+            }
+        });
+
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment fragment = new EditProfileFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
+            }
+        });
+
     }
 
     @Override
@@ -58,47 +102,7 @@ public class UserProfileFragment extends Fragment {
         avatar = (ImageView) view.findViewById(R.id.userProfileAvatar);
         editProfile = (Button) view.findViewById(R.id.userProfileEdit);
 
-        SharedPreferences sp = this.getActivity().getSharedPreferences("com.studiumrogusowe.goparty", Context.MODE_PRIVATE);
-        String token = sp.getString("token","Bearer 0");
-        Log.d("profiletoken",token);
-
-        ProfileRestAdapter.getInstance().getProfileApi().getProfile(token, new Callback<ProfileResponseObject>() {
-            @Override
-            public void success(ProfileResponseObject profileResponseObject, Response response) {
-
-                new DownloadImageTask(avatar)
-                        .execute(profileResponseObject.getPicture_url());
-                // setting name fields etc
-                name.setText(profileResponseObject.getFirst_name()+" "+profileResponseObject.getLast_name());
-
-                ArrayAdapter<String> bandsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, profileResponseObject.getFavourite_bands());
-                ArrayAdapter<String> genresAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, profileResponseObject.getFavourite_genres());
-                favBands.setAdapter(bandsAdapter);
-                favGenres.setAdapter(genresAdapter);
-
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("error",error.toString());
-            }
-        });
-
-
-
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Fragment fragment = new EditProfileFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.content_frame, fragment).addToBackStack( "tag" ).commit();
-            }
-        });
-
-                // Inflate the layout for this fragment
+        // Inflate the layout for this fragment
         return view;
     }
 
