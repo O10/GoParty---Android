@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.squareup.picasso.Picasso;
 import com.studiumrogusowe.goparty.R;
 import com.studiumrogusowe.goparty.authorization.api.AuthRestAdapter;
 import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
@@ -66,8 +67,8 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void success(ProfileResponseObject profileResponseObject, Response response) {
 
-                new DownloadImageTask(avatar)
-                        .execute(profileResponseObject.getPicture_url());
+                Picasso.with(getActivity()).load(profileResponseObject.getPicture_url()).into(avatar);
+
                 // setting name fields etc
                 name.setText(profileResponseObject.getFirst_name()+" "+profileResponseObject.getLast_name());
 
@@ -101,30 +102,4 @@ public class UserProfileFragment extends Fragment {
                 // Inflate the layout for this fragment
         return view;
     }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
-
 }

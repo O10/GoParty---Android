@@ -1,6 +1,7 @@
 package com.studiumrogusowe.goparty.clubs.api;
 
 import com.studiumrogusowe.goparty.clubs.api.model.CheckBodyObject;
+import com.studiumrogusowe.goparty.clubs.api.model.QRBodyObject;
 import com.studiumrogusowe.goparty.clubs.api.model.RatingBodyObject;
 import com.studiumrogusowe.goparty.profile.api.model.ProfileBodyObject;
 import com.studiumrogusowe.goparty.profile.api.model.ProfileResponseObject;
@@ -26,4 +27,7 @@ public interface EventQueueApi {
 
     @POST("/events/rating")
     void rate(@Header("Authorization") String token,@Body RatingBodyObject ratingBodyObject, Callback<Response> cb);
+
+    @POST("/events/qrscan")
+    void qrScan(@Header("Authorization") String token,@Body QRBodyObject qrBodyObject, Callback<Response> cb);
 }

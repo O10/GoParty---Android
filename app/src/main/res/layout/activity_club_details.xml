@@ -51,6 +51,16 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SCAN QRCODE TO GET DISCOUNT"
+                android:id="@+id/clubDetailsQR"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/login_button"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
