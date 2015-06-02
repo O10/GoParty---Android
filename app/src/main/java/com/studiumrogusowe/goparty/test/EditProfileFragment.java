@@ -90,26 +90,21 @@ public class EditProfileFragment extends Fragment {
                 profileBodyObject.setFavourite_genres(profileBodyObject.convertEditTextToList(favGenres));
 
                 // executing request
-                ProfileRestAdapter.getInstance().getProfileApi().editProfile(token, profileBodyObject, new Callback<Response>() {
+                ProfileRestAdapter.getInstance().getProfileApi().editProfile(token, profileBodyObject, new Callback<ProfileResponseObject>() {
 
 
                     @Override
-                    public void success(Response callback, Response response) {
+                    public void success(ProfileResponseObject callback, Response response) {
+                        Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
 
-                        if (callback.getStatus() == 200) {
-                            Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
-
-                            Fragment fragment = new UserProfileFragment();
-                            FragmentManager fragmentManager = getFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.content_frame, fragment).commit();
-                        } else  Toast.makeText(getActivity(), "ERROR WHILE EDITING PROFILE", Toast.LENGTH_SHORT).show();
-
+                        Fragment fragment = new UserProfileFragment();
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.content_frame, fragment).commit();
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Toast.makeText(getActivity(), "ERROR WHILE EDITING PROFILE", Toast.LENGTH_SHORT).show();
                         Log.d("error",error.toString());
                     }
                 });

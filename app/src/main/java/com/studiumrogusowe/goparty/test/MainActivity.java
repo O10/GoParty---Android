@@ -21,10 +21,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.studiumrogusowe.goparty.R;
 import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
+import com.studiumrogusowe.goparty.settings.SettingsFragment;
+
+import java.util.Stack;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -34,6 +36,9 @@ public class MainActivity extends ActionBarActivity {
     private LinearLayout mDrawerBox;
     private CharSequence mTitle;
     private ActionBarDrawerToggle mDrawerToggle;
+    private boolean drawerExposed;
+    private Stack<Integer> fragmentHistory;
+    private int currentPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         handleNoAccounts();
         mTitle = "test";
-
+        fragmentHistory = new Stack<>();
         mPlanetTitles = new String[]{"Clubs", "Your profile", "Settings"};
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -63,11 +68,13 @@ public class MainActivity extends ActionBarActivity {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 //getActionBar().setTitle(mTitle);
+                drawerExposed = false;
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 //getActionBar().setTitle(mTitle);
+                drawerExposed = true;
             }
         };
 
@@ -78,6 +85,18 @@ public class MainActivity extends ActionBarActivity {
         //getSupportActionBar().setHomeButtonEnabled(true);
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerExposed) {
+            mDrawerLayout.closeDrawer(mDrawerBox);
+        } else {
+            if (!fragmentHistory.isEmpty()) {
+                selectItem(fragmentHistory.pop(), true);
+            } else
+                super.onBackPressed();
+        }
     }
 
     @Override
@@ -115,13 +134,20 @@ public class MainActivity extends ActionBarActivity {
     /**
      * Swaps fragments in the main content view
      */
-    private void selectItem(int position) {
-       // Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
+    private void selectItem(int position, boolean onStack) {
+        // Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
 
         // Highlight the selected item, update the title, and close the drawer
+
         mDrawerList.setItemChecked(position, true);
         createFragment(position);
         mDrawerLayout.closeDrawer(mDrawerBox);
+
+        if (!onStack ) {
+            fragmentHistory.push(currentPosition);
+        }
+        currentPosition = position;
+
     }
 
     private void createFragment(int position) {
@@ -134,7 +160,8 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new UserProfileFragment();
                 break;
             case 2:
-                Toast.makeText(getApplicationContext(),"Under Construction",Toast.LENGTH_SHORT).show();
+                fragment = new SettingsFragment();
+                //Toast.makeText(getApplicationContext(),"Under Construction",Toast.LENGTH_SHORT).show();
                 break;
 
             default:
@@ -184,7 +211,7 @@ public class MainActivity extends ActionBarActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
+            selectItem(position, false);
         }
     }
 

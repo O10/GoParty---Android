@@ -1,55 +1,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.studiumrogusowe.goparty.clubs.ClubDetails"
-    android:background="@drawable/goparty_background">
+    android:background="@drawable/goparty_background"
+    tools:context="com.studiumrogusowe.goparty.clubs.ClubDetails">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#90000000">
+        android:background="#90000000"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/clubDetailsClubName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Medium Text"
-            android:id="@+id/clubDetailsClubName"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/clubDetailsCheckin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="check in"
-            android:id="@+id/clubDetailsCheckin"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/login_button"
             android:padding="5dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
-
+            android:text="check in" />
 
 
         <LinearLayout
             android:id="@+id/clubDetailsHiddenBox"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:visibility="invisible">
 
             <Button
+                android:id="@+id/clubDetailsCheckout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="check out"
-                android:id="@+id/clubDetailsCheckout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="50dp"
                 android:background="@drawable/login_button"
                 android:padding="5dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp" />
+                android:text="check out" />
 
             <Button
                 android:layout_width="match_parent"
@@ -62,29 +62,29 @@
                 android:layout_marginRight="10dp" />
 
             <TextView
+                android:id="@+id/tvRateClub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Rate club"
-                android:id="@+id/tvRateClub"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:text="Rate club"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <RatingBar
+                android:id="@+id/clubDetailsRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/clubDetailsRatingBar"
                 android:layout_gravity="center"
                 android:numStars="5"
                 android:stepSize="1" />
 
             <Button
+                android:id="@+id/clubDetailsRateSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="RATE"
-                android:id="@+id/clubDetailsRateSubmit"
+                android:layout_gravity="center"
                 android:background="@drawable/login_button"
-                android:layout_gravity="center" />
+                android:text="RATE" />
 
         </LinearLayout>
     </LinearLayout>
