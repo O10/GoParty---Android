@@ -78,6 +78,8 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     EditText mPasswordView;
     @InjectView(R.id.register_button)
     Button registerButton;
+    @InjectView(R.id.random_button)
+    Button randomButton;
     private CallbackManager fbCallbackManager;
 
     @Override
@@ -129,7 +131,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
             @Override
             public void onSuccess(final LoginResult loginResult) {
                 String fbAccessToken = loginResult.getAccessToken().getToken();
-                Log.d("token",fbAccessToken);
+                Log.d("token", fbAccessToken);
                 final AuthFacebookLoginBody authFacebookLoginBody = new AuthFacebookLoginBody();
                 authFacebookLoginBody.setAccessToken(fbAccessToken);
 
@@ -137,7 +139,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
                     @Override
                     public void success(AuthResponseObject authResponseObject, Response response) {
                         Toast.makeText(LoginActivity.this, "You are logged in with Facebook", Toast.LENGTH_SHORT).show();
-                        Log.d("token",authResponseObject.getAccess_token());
+                        Log.d("token", authResponseObject.getAccess_token());
 
 
                         saveAccount(loginResult.getAccessToken().getUserId(), "", authResponseObject.getAccess_token());
@@ -188,6 +190,23 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
                 if (getIntent().getExtras() != null)
                     signup.putExtras(getIntent().getExtras());
                 startActivityForResult(signup, REG_SINGUP);
+            }
+        });
+
+        randomButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AuthRestAdapter.getInstance().getAuthApi().getRandom(new Callback<AuthResponseObject>() {
+                    @Override
+                    public void success(AuthResponseObject authResponseObject, Response response) {
+                        saveAccount(authResponseObject.getAccess_token(), authResponseObject.getAccess_token(), authResponseObject.getAccess_token());
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Toast.makeText(LoginActivity.this,"retrofit error",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

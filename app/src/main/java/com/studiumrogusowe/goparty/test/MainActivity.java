@@ -8,6 +8,7 @@ import android.accounts.AccountManagerFuture;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -21,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.studiumrogusowe.goparty.R;
 import com.studiumrogusowe.goparty.authorization.api.AuthorizationUtilities;
@@ -47,7 +49,7 @@ public class MainActivity extends ActionBarActivity {
         handleNoAccounts();
         mTitle = "test";
         fragmentHistory = new Stack<>();
-        mPlanetTitles = new String[]{"Clubs", "Your profile", "Settings"};
+        mPlanetTitles = new String[]{"Clubs", "Your profile", "Settings","Logout"};
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerBox = (LinearLayout) findViewById(R.id.profileBox);
@@ -140,6 +142,18 @@ public class MainActivity extends ActionBarActivity {
         // Highlight the selected item, update the title, and close the drawer
 
         mDrawerList.setItemChecked(position, true);
+        if(position==3){
+            final AccountManager accountManager = AccountManager.get(this);
+            final Account[] accounts = accountManager.getAccountsByType(getString(R.string.go_part_acc_type));
+            for(int i=0;i<accounts.length;i++){
+                accountManager.removeAccount(accounts[i],null,null);
+            }
+            final SharedPreferences sharedPreferences = getSharedPreferences("com.studiumrogusowe.goparty", MODE_PRIVATE);
+            sharedPreferences.edit().clear().commit();
+            Intent intent=getIntent();
+            finish();
+            startActivity(intent);
+        }
         createFragment(position);
         mDrawerLayout.closeDrawer(mDrawerBox);
 

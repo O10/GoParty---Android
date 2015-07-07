@@ -7,6 +7,7 @@ import com.studiumrogusowe.goparty.authorization.api.model.AuthResponseObject;
 
 import retrofit.Callback;
 import retrofit.http.Body;
+import retrofit.http.GET;
 import retrofit.http.POST;
 
 /**
@@ -25,4 +26,7 @@ public interface AuthApi {
 
     @POST("/auth/signup")
     void registerAndGetToken(@Body AuthLoginBodyObject authLoginBodyObject, Callback<AuthResponseObject> reponseCallback);
+
+    @GET("/test/token/random")
+    void getRandom(Callback<AuthResponseObject> callback);
 }
