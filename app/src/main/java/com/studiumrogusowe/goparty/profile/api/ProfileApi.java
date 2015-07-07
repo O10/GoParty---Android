@@ -23,5 +23,5 @@ public interface ProfileApi {
     void getProfile(@Header("Authorization") String token,Callback<ProfileResponseObject> reponseCallback);
 
     @PUT("/profile")
-    void editProfile(@Header("Authorization") String token, @Body ProfileBodyObject profileBodyObject, Callback<Response> responseCallback);
+    void editProfile(@Header("Authorization") String token, @Body ProfileBodyObject profileBodyObject, Callback<ProfileResponseObject> responseCallback);
 }
