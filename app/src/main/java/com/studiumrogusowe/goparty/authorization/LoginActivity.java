@@ -275,6 +275,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         SharedPreferences prefs = getSharedPreferences("com.studiumrogusowe.goparty", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("token", "Bearer "+accessToken);
+        editor.putString("token_clear",accessToken);
         editor.commit();
 
         final Account account = new Account(email, getIntent().getStringExtra(ARG_ACCOUNT_TYPE));

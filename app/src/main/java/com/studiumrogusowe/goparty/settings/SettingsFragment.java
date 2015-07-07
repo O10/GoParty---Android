@@ -85,10 +85,12 @@ public class SettingsFragment extends Fragment {
     }
 
     private void registerToBackEnd() {
+        SharedPreferences sp = getActivity().getSharedPreferences("com.studiumrogusowe.goparty", Context.MODE_PRIVATE);
+        String token = sp.getString("token_clear", "0");
         final RestAdapter build = new RestAdapter.Builder().setEndpoint("http://young-reef-6139.herokuapp.com").setLogLevel(RestAdapter.LogLevel.FULL).build();
         final GcmBackendApi gcmBackendApi = build.create(GcmBackendApi.class);
 
-        gcmBackendApi.register(getRegistrationId(getActivity()), new Callback<Void>() {
+        gcmBackendApi.register(token,getRegistrationId(getActivity()), new Callback<Void>() {
             @Override
             public void success(Void aVoid, Response response) {
                 Toast.makeText(getActivity(), "Zarejestrowano", Toast.LENGTH_SHORT).show();
